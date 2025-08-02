@@ -1,6 +1,6 @@
 #' Create an mmatrix, a base R matrix with simplied printing
 #'
-#' @param ... The matrix elements separated by commas. Separate new rows using the `%;%` operator.
+#' @param ... The matrix elements separated by commas. Separate new rows using the %;% operator.
 #'
 #' @return A matrix with mmatrix printing properties
 #'
