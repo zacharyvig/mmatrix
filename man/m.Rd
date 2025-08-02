@@ -16,7 +16,8 @@ A matrix with mmatrix printing properties
 Create an mmatrix, a base R matrix with simplied printing
 }
 \examples{
-m(1, 2, 3 \%;\% 4, 5, 6)
+\code{m(1, 2, 3 \%;\% 4, 5, 6)}
+
 }
 \author{
 Zach Vig

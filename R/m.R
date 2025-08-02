@@ -2,11 +2,12 @@
 #'
 #' @param ... The matrix elements separated by commas. Separate new rows using the `%;%` operator.
 #'
-#' @returns A matrix with mmatrix printing properties
-#' @export
+#' @return A matrix with mmatrix printing properties
 #'
 #' @examples
-#' m(1, 2, 3 %;% 4, 5, 6)
+#' \code{m(1, 2, 3 %;% 4, 5, 6)}
+#'
+#' @export
 #' @author Zach Vig
 m <- function(...) {
   if ("data.frame" %in% sapply(list(...), class)) {
