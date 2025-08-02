@@ -7,7 +7,8 @@
 m(...)
 }
 \arguments{
-\item{...}{The matrix elements separated by commas. Separate new rows using the %;% operator.}
+\item{...}{The matrix elements separated by commas
+Separate new rows with the "percent sign"-"semicolon"-"percent sign" operator}
 }
 \value{
 A matrix with mmatrix printing properties
