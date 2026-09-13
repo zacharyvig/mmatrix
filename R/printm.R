@@ -2,29 +2,15 @@
 #' @export
 #' @author Zach Vig
 print.mmatrix <- function(mat) {
-  nrow <- nrow(mat)
-  ncol <- ncol(mat)
-  ms <- sapply(
-    1:ncol,
-    function(col) max(stringr::str_length(mat[, col]))
-  )
-  toprint <- c()
-  for (row in 1:nrow) {
-    l <- stringr::str_length(mat[row, ])
-    spaces <- sapply(
-      1:ncol,
-      function(col) paste0(rep(" ", ms[col] - l[col]), collapse = "")
-    )
-    r <- paste0(spaces, mat[row, ], collapse = " ")
-    if (nrow == 1) {
-      toprint <- append(toprint, c("[ ", r, " ]"))
-    } else if (row == 1) {
-      toprint <- append(toprint, c("\u23a1 ", r, " \u23a4", "\n"))
-    } else if (row == nrow) {
-      toprint <- append(toprint, c("\u23a3 ", r, " \u23a6"))
-    } else {
-      toprint <- append(toprint, c("\u2502 ", r, " \u2502", "\n"))
-    }
+  lines <- apply(format(mat, justify = "right"), 1, paste, collapse = " ")
+  if (nrow(mat) == 1) {
+    cat(paste0("[ ", lines[1], " ]\n"))
+    return(invisible(mat))
   }
-  cat(paste(toprint, collapse = ""))
+
+  top <- paste0("\u23a1 ", lines[1], " \u23a4")
+  middle <- if (nrow(mat) > 2) paste0("\u2502 ", lines[2:(nrow(mat) - 1)], " \u2502") else character(0)
+  bottom <- paste0("\u23a3 ", lines[nrow(mat)], " \u23a6")
+  cat(paste(c(top, middle, bottom), collapse = "\n"), "\n", sep = "")
+  invisible(mat)
 }
