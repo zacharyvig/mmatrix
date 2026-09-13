@@ -1,31 +1,46 @@
-#' Create an mmatrix, a base R matrix with simplied printing
+#' Create an mmatrix, a base R matrix with simplified printing
 #'
-#' @param ... The matrix elements separated by commas
-#'            Separate new rows with the "percent sign"-"semicolon"-"percent sign" operator
+#' @param ... Row inputs. Supply one row per argument (vectors, matrices, or data frames),
+#'   or combine rows with \code{\%;\%} and pass the result as a single argument.
 #'
 #' @return A matrix with mmatrix printing properties
 #'
 #' @examples
-#' \code{m(1, 2, 3 %;% 4, 5, 6)}
+#' m(c(1, 2, 3), c(4, 5, 6))
+#' m(c(1, 2, 3) %;% c(4, 5, 6))
 #'
 #' @export
 #' @author Zach Vig
 m <- function(...) {
-  if ("data.frame" %in% sapply(list(...), class)) {
-    return(data.frame(...))
-  } else if (isFALSE("matrix" %in% sapply(list(...), class))) {
-    dat <- eval(c(...))
-    nrow <- sum(grepl(";", dat)) + 1
-    dat <- dat[which(dat != ";")]
-    if (is.character(dat)) {
-      dat <- readr::parse_guess(dat)
-    }
-    mat <- matrix(
-      dat, nrow = nrow, byrow = TRUE
-    )
-  } else {
-    mat <- as.matrix(...)
+  args <- list(...)
+
+  if (length(args) == 0) {
+    stop("m() requires at least one row input.", call. = FALSE)
   }
-  class(mat) <- list("matrix", "mmatrix")
-  return(mat)
+
+  if (length(args) == 1 && is.matrix(args[[1]])) {
+    mat <- args[[1]]
+  } else {
+    to_rows <- function(x) {
+      if (is.list(x) && !is.data.frame(x)) {
+        return(unlist(lapply(x, to_rows), recursive = FALSE))
+      }
+      if (is.data.frame(x) || is.matrix(x)) {
+        return(lapply(seq_len(nrow(x)), function(i) x[i, , drop = TRUE]))
+      }
+      list(x)
+    }
+
+    rows <- unlist(lapply(args, to_rows), recursive = FALSE)
+    row_lengths <- vapply(rows, length, integer(1))
+
+    if (length(unique(row_lengths)) != 1L) {
+      stop("All rows supplied to m() must have the same length.", call. = FALSE)
+    }
+
+    mat <- do.call(rbind, lapply(rows, function(row) as.vector(row)))
+  }
+
+  class(mat) <- unique(c("mmatrix", class(mat)))
+  mat
 }

@@ -2,23 +2,23 @@
 % Please edit documentation in R/m.R
 \name{m}
 \alias{m}
-\title{Create an mmatrix, a base R matrix with simplied printing}
+\title{Create an mmatrix, a base R matrix with simplified printing}
 \usage{
 m(...)
 }
 \arguments{
-\item{...}{The matrix elements separated by commas
-Separate new rows with the "percent sign"-"semicolon"-"percent sign" operator}
+\item{...}{Row inputs. Supply one row per argument (vectors, matrices, or data frames),
+or combine rows with \code{\%;\%} and pass the result as a single argument.}
 }
 \value{
 A matrix with mmatrix printing properties
 }
 \description{
-Create an mmatrix, a base R matrix with simplied printing
+Create an mmatrix, a base R matrix with simplified printing
 }
 \examples{
-\code{m(1, 2, 3 \%;\% 4, 5, 6)}
-
+m(c(1, 2, 3), c(4, 5, 6))
+m(c(1, 2, 3) \%;\% c(4, 5, 6))
 }
 \author{
 Zach Vig

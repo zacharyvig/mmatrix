@@ -1,8 +1,15 @@
-#' New row operator for simple matrix definiton
+#' New row operator for composing matrix rows
 #' @export
 #' @author Zach Vig
 `%;%` <- function(a, b) {
-  return(c(a, ";", b))
+  to_rows <- function(x) {
+    if (is.list(x) && !is.data.frame(x)) {
+      x
+    } else {
+      list(x)
+    }
+  }
+  c(to_rows(a), to_rows(b))
 }
 
 #' Inverse matrix operator alternative
@@ -18,5 +25,5 @@ inv <- function(mat) {
 #' @author Zach Vig
 `%*%.mmatrix` <- function(lhs, rhs) {
   result <- NextMethod("%*%")
-  return(m(result))
+  m(result)
 }
